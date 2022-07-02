@@ -18,13 +18,13 @@ const create = async (req, res) => {
 const login = async (req, res) => {
     try{
         //find user by email
-        const user = await  User.findOne({ email: req.body.email});
+        const user = await  User.findOne({ email: req.body.email}).populate('projects');
         if(!user) throw new Error();
         //compare() takes user's input from req.body, hashes it, and compares it to our db hashed pw
         const match = await bcrypt.compare(req.body.password, user.password);
         //If the pws do not match throw error
         if(!match) throw new Error();
-
+        
         res.status(200).json(createJWT(user))
 
     }catch(e){

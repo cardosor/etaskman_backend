@@ -19,6 +19,12 @@ router.put('/:id', tasksController.update);
 //Delete  /api/v1/task/:id
 router.delete('/:id', tasksController.remove);
 
+//Add owner  /api/v1/task/:tid/:uid/
+router.put('/:tid/u/:uid', tasksController.addOwner);
+
+//Remove owner  /api/v1/task/:tid/:uid/
+router.delete('/:tid/u/:uid', tasksController.removeOwner);
+
 
 
 module.exports = router;

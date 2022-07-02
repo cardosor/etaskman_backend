@@ -1,9 +1,10 @@
 const Task = require('../../models/Task');
+const User = require('../../models/User');
 
 //Show a Task
 const show = async (req, res) => {
     try{
-        const foundTask = await Task.findById(req.params.id).populate('users');
+        const foundTask = await Task.findById(req.params.id);
         console.log(foundTask);
         res.status(200).json(foundTask)
 
@@ -49,13 +50,41 @@ const remove = async (req, res) => {
     }
 }
 
-//Get owners
-const getOwners = async (req, res) => {
+//Add owner
+const addOwner = async (req, res) => {
     try {
-        const foundOwners = await Task.findById(req.params.id).populate('users').select('users')
-        res.status(200).json(foundOwners)
-    } catch(e) {
-        res.status(400).json({msg: e.message})
+        const foundUser = await User.findById(req.params.uid).select('_id fname lname');
+        if (!foundUser) throw new Error();
+        const foundTask = await Task.findById(req.params.tid);
+        if (!foundTask) throw new Error();
+        const index = foundTask.owners.findIndex(u => u._id.equals(foundUser._id));
+        if (index !== -1) {
+            foundTask.owners.splice(index, 1, foundUser);
+        } else {
+            foundTask.owners.push(foundUser);
+        }
+        foundTask.save()
+        res.status(200).json(foundTask)
+    } catch (e) {
+        res.status(400).json({ msg: e.message })
+    }
+}
+
+//Remove owner
+const removeOwner = async (req, res) => {
+    try {
+        const foundUser = await User.findById(req.params.uid).select('_id fname lname');
+        if (!foundUser) throw new Error();
+        const foundTask = await Task.findById(req.params.tid);
+        if (!foundTask) throw new Error();
+        const index = foundTask.owners.findIndex(u => u._id.equals(foundUser._id));
+        if (index !== -1) {
+            foundTask.owners.splice(index, 1);
+            foundTask.save()
+        }
+        res.status(200).json(foundTask)
+    } catch (e) {
+        res.status(400).json({ msg: e.message })
     }
 }
 
@@ -64,5 +93,6 @@ module.exports = {
     create,
     update,
     remove,
-    getOwners
+    addOwner,
+    removeOwner
 }

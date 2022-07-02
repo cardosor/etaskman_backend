@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// 5 read and execute
+// 6 read and write
+// 7 read, write, delete (full access)
+
 const taskSchema = new Schema({
     title: {type:String, trim:true, unique:true, lowercase:true, required:true},
     description: {type:String, required:true},
