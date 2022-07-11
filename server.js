@@ -19,16 +19,16 @@ app.use(require('./config/checkToken'));
 
 //======ROUTES
 //Users
-app.use('/api/v1/users', require('./routes/api/users'));
+app.use('/api/v1/users', require('./routes/api/Users'));
 
 //Protect API routes bellow from anuthorized users
 const checkUserLogged = require('./config/checkUserLogged');
 
 //Projects
-app.use('/api/v1/projects', checkUserLogged, require('./routes/api/projects'));
+app.use('/api/v1/projects', checkUserLogged, require('./routes/api/Projects'));
 
 //Tasks
-app.use('/api/v1/tasks', checkUserLogged, require('./routes/api/tasks'));
+app.use('/api/v1/tasks', checkUserLogged, require('./routes/api/Tasks'));
 
 
 app.listen(port, () => console.log(`Listening to port ${port}`));
