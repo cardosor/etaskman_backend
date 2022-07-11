@@ -6,11 +6,16 @@ const Schema = mongoose.Schema;
 // 7 read, write, delete (full access)
 
 const taskSchema = new Schema({
-    title: {type:String, trim:true, unique:true, lowercase:true, required:true},
+    title: {type:String, trim:true, lowercase:true, required:true},
     description: {type:String, required:true},
     owners: {type: Array},
     start_date: {type: Date},
     end_date: {type: Date},
+    project:
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Project'
+        },
     active: Boolean,
     status: Number,
     properties : Object,

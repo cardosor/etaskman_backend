@@ -10,6 +10,7 @@ const userSchema = new Schema({
     password: {type:String, trim:true, required:true, minlength:3, maxlength:255},
     last_login: {type: Date},
     active: Boolean,
+    type: {type:String},
     projects:[
         {
             type: Schema.Types.ObjectId,
@@ -27,6 +28,9 @@ const userSchema = new Schema({
 });
 
 userSchema.pre('save', async function(next){
+    if(!this.isModified('password')){
+        return next();
+    } // Adding this statement solved the problem!!
     //This will only hash the password for our newly created user
     //User updated password, code runs below
     this.password = await bcrypt.hash(this.password, saltRounds);

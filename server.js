@@ -25,10 +25,10 @@ app.use('/api/v1/users', require('./routes/api/users'));
 const checkUserLogged = require('./config/checkUserLogged');
 
 //Projects
-app.use('/api/v1/projects', require('./routes/api/projects'));
+app.use('/api/v1/projects', checkUserLogged, require('./routes/api/projects'));
 
 //Tasks
-app.use('/api/v1/tasks', require('./routes/api/tasks'));
+app.use('/api/v1/tasks', checkUserLogged, require('./routes/api/tasks'));
 
 
 app.listen(port, () => console.log(`Listening to port ${port}`));

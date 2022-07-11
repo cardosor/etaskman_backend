@@ -1,5 +1,6 @@
 const Task = require('../../models/Task');
 const User = require('../../models/User');
+const Project = require('../../models/Project');
 
 //Show a Task
 const show = async (req, res) => {
@@ -16,9 +17,15 @@ const show = async (req, res) => {
 //Create a Task
 const create = async (req, res) => {
     try{
-        console.log(req.body);
         const createdTask = await  Task.create(req.body);
-        console.log(createdTask._id);
+        const project = await Project.findById(req.body.project);
+        console.log("project");
+        console.log(project);
+        if (!project) throw new Error();
+        project.tasks.push(createdTask._id);
+        await project.save()
+
+        console.log(createdTask);
         res.status(200).json(createdTask)
 
     }catch(e){
@@ -42,7 +49,14 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
     try{
         // const deletedTask = await  Task.findByIdAndDelete(req.params.id);
-        const deletedTask = await Task.findByIdAndUpdate(req.params.id, {active: false}, {new: true})
+        const deletedTask = await Task.findByIdAndDelete(req.params.id)
+        const project = await Project.findById(deletedTask.project);
+        console.log("project");
+        console.log(project);
+        if (!project) throw new Error();
+        const index = project.tasks.indexOf(deletedTask._id);
+        project.tasks.splice(index, 1);
+        await project.save()
         res.status(200).json(deletedTask);
 
     }catch(e){

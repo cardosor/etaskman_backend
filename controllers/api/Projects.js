@@ -1,10 +1,12 @@
 const Project = require('../../models/Project');
 const User = require('../../models/User');
 
+//Index
+
 //Show a project
 const show = async (req, res) => {
     try {
-        const foundProject = await Project.findById(req.params.id);
+        const foundProject = await Project.findById(req.params.id).populate('tasks');
         console.log(foundProject);
         res.status(200).json(foundProject)
 
@@ -16,9 +18,16 @@ const show = async (req, res) => {
 //Create a project
 const create = async (req, res) => {
     try {
+        req.body.start_date = Date.now();
         console.log(req.body);
         const createdProject = await Project.create(req.body);
-        console.log(createdProject._id);
+        console.log(createdProject.owners[0]);
+
+        const owner = await User.findById(createdProject.owners[0]._id).select("projects");
+        if (!owner) throw new Error();
+        owner.projects.push(createdProject._id);
+        await owner.save()
+
         res.status(200).json(createdProject)
 
     } catch (e) {

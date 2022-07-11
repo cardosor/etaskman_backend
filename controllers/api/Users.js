@@ -6,6 +6,9 @@ const jwt = require('jsonwebtoken');
 //Create a user
 const create = async (req, res) => {
     try{
+        console.log(req.body)
+        req.body.type = "basic";
+        req.body.last_login = Date.now();
         const createdUser = await  User.create(req.body);
         res.status(200).json(createJWT(createdUser))
 
@@ -18,12 +21,14 @@ const create = async (req, res) => {
 const login = async (req, res) => {
     try{
         //find user by email
-        const user = await  User.findOne({ email: req.body.email}).populate('projects');
+        const user = await  User.findOne({ email: req.body.email}).populate({path:'projects', match:{active:true}});
         if(!user) throw new Error();
         //compare() takes user's input from req.body, hashes it, and compares it to our db hashed pw
         const match = await bcrypt.compare(req.body.password, user.password);
         //If the pws do not match throw error
         if(!match) throw new Error();
+        //Update the last time the user logged in
+        await User.findByIdAndUpdate(user._id, {"last_login":Date.now()});
         
         res.status(200).json(createJWT(user))
 
@@ -35,7 +40,7 @@ const login = async (req, res) => {
 //Get projects
 const getProjects = async (req, res) => {
     try {
-        const Projects = await User.findById(req.params.id).populate('projects').select('projects')
+        const Projects = await User.findById(req.params.id).populate('projects').populate({path:'projects', match:{active:true}});
         res.status(200).json(Projects)
     } catch(e) {
         res.status(400).json({msg: e.message})
