@@ -24,8 +24,6 @@ const create = async (req, res) => {
         if (!project) throw new Error();
         project.tasks.push(createdTask._id);
         await project.save()
-
-        console.log(createdTask);
         res.status(200).json(createdTask)
 
     }catch(e){
