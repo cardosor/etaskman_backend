@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 //Use express middleware to parse JSON
 app.use(express.json());
 
-// app.use(require('./config/checkToken'));
+app.use(require('./config/checkToken'));
 
 
 //======ROUTES
