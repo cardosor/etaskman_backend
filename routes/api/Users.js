@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const usersController = require('../../controllers/api/users');
+const usersController = require('../../controllers/api/Users');
 const checkUserLogged = require('../../config/checkUserLogged');
 
 //INDUCES
