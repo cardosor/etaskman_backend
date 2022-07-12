@@ -47,10 +47,10 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
     try{
         // const deletedTask = await  Task.findByIdAndDelete(req.params.id);
+        console.log(req.params.id);
         const deletedTask = await Task.findByIdAndDelete(req.params.id)
         const project = await Project.findById(deletedTask.project);
-        console.log("project");
-        console.log(project);
+        console.log(deletedTask);
         if (!project) throw new Error();
         const index = project.tasks.indexOf(deletedTask._id);
         project.tasks.splice(index, 1);

@@ -2,6 +2,18 @@ const Project = require('../../models/Project');
 const User = require('../../models/User');
 
 //Index
+const index = async (req, res) => {
+    try {
+        const userID=req.params.id;
+        console.log("userID ", userID);
+        const foundProjects = await Project.find({'owners':{$elemMatch:{_id:userID}}});
+        console.log(foundProjects);
+        res.status(200).json(foundProjects)
+
+    } catch (e) {
+        res.status(400).json({ msg: e.message });
+    }
+}
 
 //Show a project
 const show = async (req, res) => {
@@ -113,6 +125,7 @@ const removeOwner = async (req, res) => {
 
 
 module.exports = {
+    index,
     show,
     create,
     update,

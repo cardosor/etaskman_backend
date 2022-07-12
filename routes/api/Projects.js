@@ -10,6 +10,9 @@ const checkUserLogged = require('../../config/checkUserLogged');
 //POST create /api/v1/projects
 router.post('/', projectsController.create);
 
+//GET index /api/v1/projects/:id
+router.get('/user/:id', projectsController.index);
+
 //GET show /api/v1/projects/:id
 router.get('/:id', projectsController.show);
 

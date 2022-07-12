@@ -40,7 +40,7 @@ const login = async (req, res) => {
 //Get projects
 const getProjects = async (req, res) => {
     try {
-        const Projects = await User.findById(req.params.id).populate('projects').populate({path:'projects', match:{active:true}});
+        const Projects = await User.findById(req.params.id).populate({path:'projects', match:{active:true}});
         res.status(200).json(Projects)
     } catch(e) {
         res.status(400).json({msg: e.message})
@@ -71,7 +71,8 @@ const remove = async (req, res) => {
 //Show a user
 const show = async (req, res) => {
     try{
-        const foundUser = await  User.findById(req.params.id);
+        const foundUser = await  User.findById(req.params.id).populate({path:'projects', match:{active:true}});
+        console.log(foundUser);
         res.status(200).json(foundUser)
 
     }catch(e){
