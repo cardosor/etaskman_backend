@@ -1,19 +1,19 @@
-"# etaskman_backend" 
+# ETaskMan_backend
 
-Easy Task managment backend
+Easy Task managment backend  
 
-About The Project:
-The project is an task managment system based in the kanban methodology.
+About The Project:  
+The project is an task managment system based in the kanban methodology.  
 
-Built With:
-    Node.js
-    Express.js
-    MongoDB
-    React.js
-    Bootstrap
+Built With:  
+    Node.js  
+    Express.js  
+    MongoDB  
+    React.js  
+    Bootstrap  
 
 
-Routes:
+Routes:  
 
 VERB 		 | 		  PATH 		 |  	 DESCRIPTION
 ------------ | ------------- | -------------------
@@ -37,7 +37,7 @@ PUT | /api/v1/tasks/:id | Create a Task |
 DELETE | /api/v1/tasks/:id | Create a Task |
 
 
-Future implementations:
+Future implementations:  
 
-Refacture and clean some of the code.
-Create routes for paid users to work as a team.
+Refacture and clean some of the code.  
+Create routes for paid users to work as a team.  
